@@ -136,7 +136,7 @@ TCP Client -> ckb.example.com:443 -> Nginx (stream, ssl_preread) -> backend_tcp 
 WSS Client -> ckb.example.com:443 -> Nginx (stream, ssl_preread) -> backend_wss_http -> 127.0.0.1:8443 -> Nginx (http, TLS decryption, WebSocket) -> [ckb node 8118]
 ```
 
-## Reloading Nginx After Updating nginx.conf
+## Reload Nginx After Updating nginx.conf
 ```
 sudo nginx -t
 sudo nginx -s reload
@@ -146,8 +146,22 @@ sudo nginx -s reload
 
 Add an A record for the domain ckb.example.com to your CKB node's IP address in your domain registrar.
 
-## Fetching Local CKB Node Information
-Use the CKB RPC `local_node_info` to retrieve node details:
+## Modify ckb.toml to Enable public_addresses
+
+Remove the # in front of public_addresses and enter your domain address in the format: "/dns4/your-domain/tcp/nginx-listening-port"
+
+Edit ckb.toml
+```
+public_addresses = ["/dns4/ckb.example.com/tcp/443]
+```
+## Restart CKB
+Restart your CKB node after making the changes.
+
+## Verification Steps
+
+1、Fetching Local CKB Node public_addresses
+
+Use the CKB RPC `local_node_info` to retrieve node details
 ```
 echo '{
     "id": 2,
@@ -158,28 +172,13 @@ echo '{
 ```
 
 **Sample Output:**
+
 ```
-"/ip4/43.198.48.141/tcp/8118/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"
+"/dns4/ckb.example.com/tcp/443/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"
 ```
+2、Initialize a new CKB node with version 0.200.0+
 
-## Modifying ckb.toml to Enable public_addresses
-
-Update the node information returned by local_node_info:
-- Change ip4 to dns4.
-- Replace the node IP with your domain (ckb.example.com).
-- Replace 8118 with 443 (the public port configured in nginx.conf).
-
-Edit ckb.toml
-```
-public_addresses = ["/dns4/ckb.example.com/tcp/443/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"]
-```
-## Restarting CKB
-Restart your CKB node after making the changes.
-
-## Verification Steps
-1、Initialize a new CKB node with version 0.200.0+:
-
-2、Clear the bootnodes and replace it with the public_addresses configured above.
+3、Clear the bootnodes and replace it with the public_addresses configured above
 
 Edit ckb.toml
 ```
@@ -187,4 +186,4 @@ bootnodes = [
  "/dns4/ckb.example.com/tcp/443/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"
 ]
 ```
-3、Start the new CKB node and check the logs (it may take some time for the new node to sync, so please be patient). If the node successfully syncs blocks, the configuration is successful.
+4、Start the new CKB node and check the logs (it may take some time for the new node to sync, so please be patient). If the node successfully syncs blocks, the configuration is successful.
