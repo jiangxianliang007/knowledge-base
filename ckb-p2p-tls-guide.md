@@ -186,6 +186,13 @@ bootnodes = [
  "/dns4/ckb.example.com/tcp/443/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"
 ]
 ```
+
+The wasm light client bootnode needs to have wss added, e.g.
+```
+bootnodes = [
+ "/dns4/ckb.example.com/tcp/443/wss/p2p/QmQDJWySDgJC8eKmdZBMJuYiin5cJUhbYeBjNWvrXRYYUK"
+]
+```
 4、Start the new CKB node and check the logs (it may take some time for the new node to sync, so please be patient). If the node successfully syncs blocks, the configuration is successful.
 
 ## [Quick start with docker compose](https://github.com/jiangxianliang007/ckb-network-tls-proxy/blob/main/README.md)
