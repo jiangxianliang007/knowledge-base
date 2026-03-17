@@ -9,3 +9,5 @@
 - [DNS 劫持攻击简介](DNS劫持攻击.md)
 - [Prometheus 学习](prometheus.md)
 - [Fiber Node Network Connection TLS Configuration Guide](fiber-node-wss-access.md)
+- [基于Terraform+Ansible的Fiber节点压测环境自动化部署.md](基于Terraform+Ansible的Fiber节点压测环境自动化部署.md)
+
